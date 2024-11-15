@@ -1,42 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing Script:wght@400;700&family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson Pro:wght@400;700&family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
+  
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+button:hover {
+  background-color: #0056b3;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.completed-orders {
+  display: flex;
+  flex-direction: column;
 }
 
-.card {
-  padding: 2em;
+.completed-order {
+  margin-bottom: 1rem;
 }
 
-.read-the-docs {
-  color: #888;
+
+.bg-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
+
+.font-Dancing {
+  font-family: 'Dancing Script' ;
+}
+
+.font-Gummy {
+  font-family: 'Sour Gummy';
+};
+
+.font-Crimson {
+  font-family: 'Crimson Pro';
+};
+
+.font-Chivo {
+  font-family: 'Chivo';
+};
+
+.font-Pacifico {
+  font-family: 'Pacifico';
+}
+
+.font-Outfit {
+  font-family: 'Outfit';
+};
+
