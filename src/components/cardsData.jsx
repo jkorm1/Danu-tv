@@ -1,8 +1,8 @@
 export const cards = [
-  { queueNumber: 1, orderId: "#6836456", name: "Attipoe Bolati", items: 4, timeSpent: "6 min ago", table: "2", status: "Getting Ready", emoji: "😀" },
-  { queueNumber: 2, orderId: "#5729384", name: "Jane Smith", items: 2, timeSpent: "10 min ago", table: " 3", status: "Getting Ready", emoji: "🍕" },
-  { queueNumber: 3, orderId: "#2394827", name: "Mark Johnson", items: 5, timeSpent: "12 min ago", table: "1", status: "Getting Ready", emoji: "🚀" },
-  { queueNumber: 4, orderId: "#3847563", name: "Emily Davis", items: 3, timeSpent: "15 min ago", table: "4", status: "Getting Ready", emoji: "🔥" },
+  { queueNumber: 1, orderId: "#6836456", name: "Attipoe Bolati", items: 4, timeSpent: "6 min ago", table: "2", status: "Ready...", emoji: "😀" },
+  { queueNumber: 2, orderId: "#5729384", name: "Jane Smith", items: 2, timeSpent: "10 min ago", table: " 3", status: "Ready...", emoji: "🍕" },
+  { queueNumber: 3, orderId: "#2394827", name: "Mark Johnson", items: 5, timeSpent: "12 min ago", table: "1", status: "Ready...", emoji: "🚀" },
+  { queueNumber: 4, orderId: "#3847563", name: "Emily Davis", items: 3, timeSpent: "15 min ago", table: "4", status: "Ready...", emoji: "🔥" },
   { queueNumber: 5, orderId: "#7384921", name: "Michael Brown", items: 4, timeSpent: "20 min ago", table: "1", status: "On Process", emoji: "🌟" },
   { queueNumber: 6, orderId: "#1928374", name: "Sarah Wilson", items: 6, timeSpent: "25 min ago", table: "3", status: "On Process", emoji: "🎉" },
   { queueNumber: 7, orderId: "#8394726", name: "Chris Lee", items: 2, timeSpent: "30 min ago", table: " 2", status: "On Process", emoji: "🕒" },

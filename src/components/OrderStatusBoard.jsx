@@ -6,7 +6,7 @@ import logo from '../assets/public/logo.png';
 
 const OrderStatusBoard = () => {
   return (
-    <div className="relative font-Outfit bg-gradient-to-r from-blue-500 to-purple-600 min-h-screen w-full overflow-hidden p-4">
+    <div className="relative font-Outfit  min-h-screen w-full overflow-hidden p-4">
       <div className="text-white flex flex-row w-full space-x-4">
         <div className="w-1/5 p-4 bg-gray-200/70 backdrop-blur-md rounded-lg shadow-lg transition-transform transform hover:translate-y-1 hover:shadow-xl">
           <CompletedOrders orders={completedOrders} />
