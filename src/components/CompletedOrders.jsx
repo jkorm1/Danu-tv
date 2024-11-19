@@ -1,27 +1,52 @@
-import React from 'react';
 
-const CompletedOrders = ({ orders }) => {
+import React from 'react'
+import { ChefHat, Clock, Package } from 'lucide-react'
+import { cn } from "@/lib/utils"
+
+export default function CompletedOrdersSidepanel({ orders = [] }) {
   if (!orders || orders.length === 0) {
-    return <p className="text-xs text-gray-500">No completed orders.</p>;
+    return (
+      <div className="flex flex-col items-center justify-center h-full bg-gray-50 p-4">
+        <Package className="w-12 h-12 text-gray-400 mb-4" />
+        <p className="text-sm text-gray-500 text-center">No completed orders at the moment.</p>
+      </div>
+    )
   }
 
   return (
-    <div className="space-y-2  shadow-xm" role="list">
-      {orders.map(order => (
-        <div
-          key={order.orderId}
-          className="  backdrop-blur-sm rounded-lg shadow p-2 text-center shadow-lg duration-200"
-          role="listitem"
-        >
-          <h3 className="text-sm font-bold text-black">{order.orderId}</h3>
-          <p className="text-xs  font-Dancing text-black">{order.timeSpent} ago</p>
-          <div className={`text-xs px-1 py-1 rounded bg-green-500/10`}>
-           <span className="text-xs text-green-600 text-black">{order.status}</span>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-};
+    <div className="bg-gray-50 h-full flex flex-col">
+      <div className="flex-1 overflow-y-auto">
+        {orders.map((order) => (
+          <div
+            key={order.orderId}
+            className={cn(
+              "bg-white p-4 border-b border-gray-200 last:border-b-0",
+              "hover:bg-gray-50 transition-colors duration-150 ease-in-out"
+            )}
+          >
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-sm font-medium text-gray-900">{order.orderId}</h3>
+              <span className="text-center rounded-full text-xs font-bold text-green-400">
+                . . . .
+              </span>
 
-export default CompletedOrders;
+            </div>
+
+            <div className="flex flex-row justify-between">
+              <div className="flex items-center text-gray-600 mb-2">
+                <p className="text-xs font-medium text-blue-700">{order.orderType}</p>
+              </div>
+
+              <div className="flex items-center text-gray-600 mb-2">
+                <ChefHat className="h-5 w-5" strokeWidth={1.5}></ChefHat>
+              </div>
+            </div>
+
+
+
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}

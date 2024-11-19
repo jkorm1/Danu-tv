@@ -7,8 +7,10 @@ export default {
   ],
   theme: {
   	extend: {
-
-		 keyframes: {
+  		fontFamily: {
+  			sans: ['Inter', 'sans-serif'],
+  		},
+  		keyframes: {
         shimmer: {
           '0%': { backgroundPosition: '-200% 0' },
           '100%': { backgroundPosition: '200% 0' },
