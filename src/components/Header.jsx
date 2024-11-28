@@ -2,6 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { ChefHat, UtensilsCrossed, Cloud } from 'lucide-react';
 
 export default function Header() {
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <header className="fixed top-0 left-0 right-0 h-12 bg-gray-800/95 shadow-md z-50">
       <div className="h-full mx-8 flex items-center justify-between">
@@ -14,11 +24,21 @@ export default function Header() {
 
         {/* Center section - Current Time */}
         <div className="flex items-center text-lg font-medium tracking-wide text-white">
-          {new Date().toLocaleTimeString('en-US', { 
-            hour: '2-digit', 
-            minute: '2-digit', 
-            hour12: false 
-          })}
+          <div className="bg-white/10 backdrop-blur-md rounded-lg 
+                        px-4 py-2 shadow-[0_4px_15px_-1px_rgba(0,0,0,0.1)]
+                        border border-white/20">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent pointer-events-none"/>
+              <div className="relative z-10">
+                {currentTime.toLocaleTimeString('en-US', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit',
+                  hour12: true
+                })}
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Right section - Enhanced glass effect */}

@@ -80,7 +80,7 @@ export default function OrderStatusBoard() {
         <Card className="flex-1 mt-2 justify-between p-2 bg-black/5 backdrop-blur-sm">
           <CardHeader className="flex flex-row justify-between p-2">
             <div className="flex items-center gap-2">
-              <ListOrdered className="h-5 w-5 text-green-600" />
+              <ListOrdered className="h-5 w-5 text-blue-600" />
               <CardTitle className="tracking-wide ">Up-Next</CardTitle>
             </div>
           </CardHeader>
