@@ -1,8 +1,9 @@
 import React from 'react'
-import { Clock, Flame, ChefHat, CheckCircle } from 'lucide-react'
+import { Clock, Flame, ChefHat, CheckCircle, ListOrdered, Utensils, Loader2, PizzaIcon, CookingPot } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import OrderStatusCard from './OrderStatusCard'
 import { cards, completedOrders } from './cardsData'
+import { ClipboardList } from 'lucide-react'
 
 // Add this CSS to your index.css or create a new animation class
 `
@@ -27,64 +28,66 @@ import { cards, completedOrders } from './cardsData'
 `
 
 export default function OrderStatusBoard() {
-  const totalOrders = cards.length + completedOrders.length
-  const cookingOrders = cards.filter(order => order.status === 'Cooking').length
-  const completedOrdersCount = completedOrders.length
+  const processOrders = cards.slice(0, 3).map(order => ({
+    ...order,
+    status: 'On Process'
+  }));
+  
+  const pendingOrders = cards.slice(3).map(order => ({
+    ...order,
+    status: 'Pending'
+  }));
+
+  const allOrders = [...processOrders, ...pendingOrders];
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 p-4">
-      <div className="flex flex-col space-y-3">
-        <div className="flex flex-row gap-4">
-          <Card className="flex-1 bg-blue-50/60">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+    <div className="min-h-screen w-full bg-gray-50 p-2 mt-12 overflow-hidden">
+      <div className="flex flex-col h-[calc(100vh-4rem)]">
+        <div className="grid grid-cols-3 gap-2 h-20">
+          <Card className="bg-blue-50/60">
+            <CardHeader className="flex flex-row items-center justify-between p-2">
               <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
+              <ClipboardList className="h-4 w-4 text-muted-foreground text-blue-600" />
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{totalOrders}</div>
-              <p className="text-xs text-muted-foreground">For today</p>
+            <CardContent className="pt-0 px-2 pb-2">
+              <div className="text-xl font-bold">{allOrders.length}</div>
             </CardContent>
           </Card>
-          <Card className="flex-1 bg-amber-50/60">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Cooking</CardTitle>
-              <div className="animate-pulse">
-                <Flame className="h-5 w-5 text-orange-500" />
+
+          <Card className="bg-amber-50/60">
+            <CardHeader className="flex flex-row items-center justify-between p-2">
+              <CardTitle className="text-sm font-medium">On Process</CardTitle>
+              <div className="relative">
+                <CookingPot className="h-4 w-4 text-amber-600 animate-spin [animation-duration:3s]" />
               </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{cookingOrders}</div>
-              <p className="text-xs text-muted-foreground">Orders in progress</p>
+            <CardContent className="pt-0 px-2 pb-2">
+              <div className="text-xl font-bold">{processOrders.length}</div>
             </CardContent>
           </Card>
-          <Card className="flex-1 bg-green-50/60">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Completed</CardTitle>
-              <CheckCircle className="h-4 w-4 text-muted-foreground" />
+
+          <Card className="bg-blue-50/60">
+            <CardHeader className="flex flex-row items-center justify-between p-2">
+              <CardTitle className="text-sm font-medium">Pending</CardTitle>
+              <Clock className="h-4 w-4 text-muted-foreground text-blue-600 animate-pulse" />
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{completedOrdersCount}</div>
-              <p className="text-xs text-muted-foreground">Orders finished</p>
+            <CardContent className="pt-0 px-2 pb-2">
+              <div className="text-xl font-bold">{pendingOrders.length}</div>
             </CardContent>
           </Card>
         </div>
 
-        <Card className="flex-1">
-          <CardHeader className="flex flex-row justify-between p-3">
-            <div className="flex flex-row items-center space-x-4">
-              <CardTitle className="uppercase tracking-wide">Up-Next</CardTitle>
-              <p className="text-sm text-muted-foreground">
-                {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-              </p>
-              <div className="text-sm border rounded-md px-2 py-1 text-muted-foreground">
-                {new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
-              </div>
+        <Card className="flex-1 mt-2 justify-between p-2 bg-black/5 backdrop-blur-sm">
+          <CardHeader className="flex flex-row justify-between p-2">
+            <div className="flex items-center gap-2">
+              <ListOrdered className="h-5 w-5 text-green-600" />
+              <CardTitle className="tracking-wide ">Up-Next</CardTitle>
             </div>
           </CardHeader>
 
-          <CardContent className="pt-2 px-3">
-            <div className="grid grid-cols-4 gap-3">
-              {cards.map(order => (
+          <CardContent className="p-2">
+            <div className="grid grid-cols-5 gap-2">
+              {allOrders.map(order => (
                 <OrderStatusCard 
                   key={order.orderId} 
                   order={order}

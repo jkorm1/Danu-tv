@@ -15,9 +15,14 @@ export default {
           '0%': { backgroundPosition: '-200% 0' },
           '100%': { backgroundPosition: '200% 0' },
         },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-5px)' },
+        }
       },
       animation: {
-		shimmer: 'shimmer 1.8s infinite linear',
+		shimmer: 'shimmer 2s linear infinite',
+        float: 'float 3s ease-in-out infinite',
       },
   		borderRadius: {
   			lg: 'var(--radius)',
@@ -76,6 +81,12 @@ export default {
   				ring: 'hsl(var(--sidebar-ring))'
   			}
   		}
+  	},
+  	scale: {
+  		'102': '1.02',
+  	},
+  	backgroundImage: {
+  		'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
   	}
   },
   plugins: [require("tailwindcss-animate")],

@@ -1,40 +1,56 @@
-import React from 'react'
-import { ChefHat,UtensilsCrossed, Bell, Utensils,  } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { cards } from './cardsData'
+import React, { useState, useEffect } from 'react';
+import { ChefHat, UtensilsCrossed, Cloud } from 'lucide-react';
 
 export default function Header() {
-  const totalOrders = cards.length;
-
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white shadow-sm z-10">
-      <div className="container mx-auto px-4 py-2">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <ChefHat className="h-5 w-5 text-primary" />
-            <h1 className="text-xl font-semibold tracking-wide">Bell's Kitchen</h1>
-            <UtensilsCrossed className="h-5 w-5 text-primary" />
-          </div>
-     
-          <div className="relative">
-            <Button variant="ghost" size="icon" className="h-8 w-8">
-              <Bell className="h-4 w-4" />
-              <span className="sr-only">Notifications</span>
-            </Button>
-            {totalOrders > 0 && (
-              <div className="absolute -top-1 -right-1">
-                <Badge 
-                  variant="destructive" 
-                  className="h-4 w-4 flex items-center justify-center p-0 rounded-full text-[10px] font-normal"
-                >
-                  {totalOrders}
-                </Badge>
+    <header className="fixed top-0 left-0 right-0 h-12 bg-gray-800/95 shadow-md z-50">
+      <div className="h-full mx-8 flex items-center justify-between">
+        {/* Left section - Brand */}
+        <div className="flex items-center gap-4">
+          <ChefHat className="h-6 w-6 text-white" />
+          <h1 className="text-xl font-semibold tracking-wider px-1 text-white">Bell's Kitchen</h1>
+          <UtensilsCrossed className="h-6 w-6 text-white" />
+        </div>
+
+        {/* Center section - Current Time */}
+        <div className="flex items-center text-lg font-medium tracking-wide text-white">
+          {new Date().toLocaleTimeString('en-US', { 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            hour12: false 
+          })}
+        </div>
+
+        {/* Right section - Enhanced glass effect */}
+        <div className="flex items-center">
+          <div className="bg-white/10 backdrop-blur-md rounded-lg 
+                        shadow-[0_4px_15px_-1px_rgba(0,0,0,0.1)]
+                        border border-white/20 overflow-hidden">
+            <div className="flex items-center divide-x divide-white/10">
+              {/* Date section */}
+              <div className="px-4 py-1.5 relative">
+                <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent pointer-events-none"/>
+                <div className="text-sm text-white/90 tracking-wide relative z-10">
+                  {new Date().toLocaleDateString('en-US', { 
+                    weekday: 'long',
+                    month: 'long', 
+                    day: 'numeric'
+                  })}
+                </div>
               </div>
-            )}
+
+              {/* Weather section */}
+              <div className="px-4 py-1.5 relative">
+                <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent pointer-events-none"/>
+                <div className="flex items-center gap-2 relative z-10">
+                  <Cloud className="h-4 w-4 text-white/90" />
+                  <span className="text-sm text-white/90">24°C</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </header>
-  )
+  );
 }
