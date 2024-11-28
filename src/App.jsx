@@ -10,11 +10,12 @@ function App() {
     <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-1 flex">
-        <aside className="w-[320px] fixed left-0 top-16 bottom-0 bg-white border-r p-4 overflow-hidden">
-          <h2 className="text-lg font-semibold mb-4 text-center">Completed Orders</h2>
-          <CompletedOrders orders={completedOrders} />
+        <aside className="w-[120px] fixed left-0 top-12 bottom-0 bg-white border-r">
+          <div className="h-full">
+            <CompletedOrders orders={completedOrders} />
+          </div>
         </aside>
-        <div className="flex-1 ml-[320px]">
+        <div className="flex-1 ml-[120px] mt-12">
           <OrderStatusBoard />
         </div>
       </main>

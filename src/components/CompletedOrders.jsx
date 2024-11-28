@@ -1,52 +1,45 @@
-
 import React from 'react'
-import { ChefHat, Clock, Package } from 'lucide-react'
-import { cn } from "@/lib/utils"
+import { Truck, ShoppingBag, UtensilsCrossed, Clock } from 'lucide-react'
 
-export default function CompletedOrdersSidepanel({ orders = [] }) {
-  if (!orders || orders.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full bg-gray-50 p-4">
-        <Package className="w-12 h-12 text-gray-400 mb-4" />
-        <p className="text-sm text-gray-500 text-center">No completed orders at the moment.</p>
-      </div>
-    )
-  }
+export default function CompletedOrders({ orders }) {
+  const getOrderTypeIcon = (type) => {
+    switch(type.toLowerCase()) {
+      case 'delivery':
+        return <Truck className="h-4 w-4 mr-1" />;
+      case 'take-out':
+      case 'takeout':
+        return <ShoppingBag className="h-4 w-4 mr-1" />;
+      case 'dine-in':
+      case 'dinein':
+        return <UtensilsCrossed className="h-4 w-4 mr-1" />;
+      case 'reserved':
+        return <Clock className="h-4 w-4 mr-1" />;
+      default:
+        return <ShoppingBag className="h-4 w-4 mr-1" />;
+    }
+  };
 
   return (
-    <div className="bg-gray-50 h-full flex flex-col">
-      <div className="flex-1 overflow-y-auto">
+    <div className="h-full flex flex-col">
+      <h2 className="text-sm font-semibold py-2 text-center border-b bg-green-200/70 sticky top-0">
+        Completed Orders
+      </h2>
+      <div className="overflow-y-auto flex-1">
         {orders.map((order) => (
           <div
             key={order.orderId}
-            className={cn(
-              "bg-white p-4 border-b border-gray-200 last:border-b-0",
-              "hover:bg-gray-50 transition-colors duration-150 ease-in-out"
-            )}
+            className="border-b last:border-b-0 py-3 px-4 hover:bg-gray-100 transition-colors"
           >
-            <div className="flex justify-between items-center mb-2">
-              <h3 className="text-sm font-medium text-gray-900">{order.orderId}</h3>
-              <span className="text-center rounded-full text-xs font-bold text-green-400">
-                . . . .
-              </span>
-
-            </div>
-
-            <div className="flex flex-row justify-between">
-              <div className="flex items-center text-gray-600 mb-2">
-                <p className="text-xs font-medium text-blue-700">{order.orderType}</p>
-              </div>
-
-              <div className="flex items-center text-gray-600 mb-2">
-                <ChefHat className="h-5 w-5" strokeWidth={1.5}></ChefHat>
+            <div className="flex flex-col space-y-1">
+              <span className="text-sm font-semibold text-gray-800">{order.orderId}</span>
+              <div className="flex items-center text-xs text-gray-600">
+                {getOrderTypeIcon(order.orderType)}
+                <span>{order.orderType}</span>
               </div>
             </div>
-
-
-
           </div>
         ))}
       </div>
     </div>
-  )
+  );
 }
