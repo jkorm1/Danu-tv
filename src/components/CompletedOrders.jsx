@@ -26,7 +26,9 @@ export default function CompletedOrders({ orders }) {
         {orders.map((order) => (
           <div
             key={order.orderId}
-            className="bg-white/40 backdrop-blur-md border-b border-gray-200"
+            className="bg-white/40 backdrop-blur-md border-b border-gray-200
+                       animate-in slide-in-from-left duration-500
+                       hover:bg-white/60 transition-colors"
           >
             <div className="relative py-2 px-3">
               <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"/>

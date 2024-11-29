@@ -16,7 +16,16 @@ const OrderStatusCard = ({ order }) => {
   };
 
   return (
-    <Card className="w-full bg-white/90">
+    <Card className={cn(
+      "w-full bg-white/90 transition-all duration-500",
+      "hover:shadow-md",
+      order.status === "On Process" && "animate-pulse-slow",
+      // Animation for cards moving out
+      "data-[moving=true]:animate-slide-out-fade",
+      "data-[moving=true]:transform",
+      "data-[moving=true]:transition-all",
+      "data-[moving=true]:duration-700"
+    )}>
       <CardContent className="p-1.5">
         <div className="flex flex-col gap-0.5">
           <div className="flex items-center justify-between w-full">

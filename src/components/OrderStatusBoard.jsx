@@ -29,36 +29,46 @@ import { ClipboardList } from 'lucide-react'
 
 export default function OrderStatusBoard({ onOrderComplete }) {
   const [cards, setCards] = useState(initialCards);
+  const [movingCards, setMovingCards] = useState(new Set());
 
   useEffect(() => {
     const processInterval = setInterval(() => {
       setCards(prevCards => {
-        // Find current "On Process" orders
         const processingOrders = prevCards
           .filter(order => order.status === "On Process")
           .slice(0, 3);
 
         if (processingOrders.length > 0) {
-          // Notify parent about completed orders
-          processingOrders.forEach(order => {
-            onOrderComplete({
-              ...order,
-              status: "Completed",
-              completedAt: new Date()
-            });
-          });
+          // Mark cards as moving
+          setMovingCards(new Set(processingOrders.map(order => order.orderId)));
 
-          // Update remaining cards
-          return prevCards
-            .filter(card => !processingOrders.find(po => po.orderId === card.orderId))
-            .map((card, index) => ({
-              ...card,
-              status: index < 3 ? "On Process" : "Pending"
-            }));
+          // Wait for animation before removing
+          setTimeout(() => {
+            setCards(currentCards => 
+              currentCards
+                .filter(card => !processingOrders.find(po => po.orderId === card.orderId))
+                .map((card, index) => ({
+                  ...card,
+                  status: index < 3 ? "On Process" : "Pending"
+                }))
+            );
+            
+            // Notify parent about completed orders
+            processingOrders.forEach(order => {
+              onOrderComplete({
+                ...order,
+                status: "Completed",
+                completedAt: new Date()
+              });
+            });
+
+            // Clear moving cards
+            setMovingCards(new Set());
+          }, 700); // Match animation duration
         }
         return prevCards;
       });
-    }, 10000); // Process every 10 seconds
+    }, 10000);
 
     return () => clearInterval(processInterval);
   }, [onOrderComplete]);
@@ -119,6 +129,7 @@ export default function OrderStatusBoard({ onOrderComplete }) {
                 <OrderStatusCard 
                   key={order.orderId} 
                   order={order}
+                  data-moving={movingCards.has(order.orderId)}
                 />
               ))}
             </div>
