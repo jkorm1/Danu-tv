@@ -7,11 +7,7 @@ export default function CompletedOrders({ orders }) {
       case 'delivery':
         return <Truck className="h-3 w-3 text-green-600" />;
       case 'take-out':
-      case 'takeout':
         return <ShoppingBag className="h-3 w-3 text-green-600" />;
-      case 'dine-in':
-      case 'dinein':
-        return <UtensilsCrossed className="h-3 w-3 text-green-600" />;
       case 'reserved':
         return <Clock className="h-3 w-3 text-green-600" />;
       default:

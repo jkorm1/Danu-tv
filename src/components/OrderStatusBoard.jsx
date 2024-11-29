@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { Clock, Flame, ChefHat, CheckCircle, ListOrdered, Utensils, Loader2, PizzaIcon, CookingPot } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import OrderStatusCard from './OrderStatusCard'
-import { cards, completedOrders } from './cardsData'
+import { cards as initialCards } from './cardsData'
 import { ClipboardList } from 'lucide-react'
 
 // Add this CSS to your index.css or create a new animation class
@@ -27,16 +27,44 @@ import { ClipboardList } from 'lucide-react'
 }
 `
 
-export default function OrderStatusBoard() {
-  const processOrders = cards.slice(0, 3).map(order => ({
-    ...order,
-    status: 'On Process'
-  }));
-  
-  const pendingOrders = cards.slice(3).map(order => ({
-    ...order,
-    status: 'Pending'
-  }));
+export default function OrderStatusBoard({ onOrderComplete }) {
+  const [cards, setCards] = useState(initialCards);
+
+  useEffect(() => {
+    const processInterval = setInterval(() => {
+      setCards(prevCards => {
+        // Find current "On Process" orders
+        const processingOrders = prevCards
+          .filter(order => order.status === "On Process")
+          .slice(0, 3);
+
+        if (processingOrders.length > 0) {
+          // Notify parent about completed orders
+          processingOrders.forEach(order => {
+            onOrderComplete({
+              ...order,
+              status: "Completed",
+              completedAt: new Date()
+            });
+          });
+
+          // Update remaining cards
+          return prevCards
+            .filter(card => !processingOrders.find(po => po.orderId === card.orderId))
+            .map((card, index) => ({
+              ...card,
+              status: index < 3 ? "On Process" : "Pending"
+            }));
+        }
+        return prevCards;
+      });
+    }, 10000); // Process every 10 seconds
+
+    return () => clearInterval(processInterval);
+  }, [onOrderComplete]);
+
+  const processOrders = cards.filter(order => order.status === "On Process");
+  const pendingOrders = cards.filter(order => order.status === "Pending");
 
   const allOrders = [...processOrders, ...pendingOrders];
 
