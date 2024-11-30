@@ -10,14 +10,35 @@ function App() {
 
   // Handler to receive completed orders from OrderStatusBoard
   const handleOrderComplete = (completedOrder) => {
-    setCompletedOrders(prev => [completedOrder, ...prev]);
-    
-    // Remove completed orders after 30 seconds
-    setTimeout(() => {
-      setCompletedOrders(prev => 
-        prev.filter(order => order.orderId !== completedOrder.orderId)
-      );
-    }, 30000);
+    // First check if this order is already in completedOrders
+    const isAlreadyCompleted = completedOrders.some(
+      order => order.orderId === completedOrder.orderId
+    );
+
+    // Only proceed if the order isn't already completed
+    if (!isAlreadyCompleted) {
+      const uniqueCompletedOrder = {
+        ...completedOrder,
+        uniqueId: `${completedOrder.orderId}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+      };
+      
+      // Add console.log to debug
+      console.log('Adding order:', uniqueCompletedOrder.orderId);
+      
+      setCompletedOrders(prev => {
+        // Double check for duplicates before adding
+        if (prev.some(order => order.orderId === completedOrder.orderId)) {
+          return prev;
+        }
+        return [...prev, uniqueCompletedOrder];
+      });
+      
+      setTimeout(() => {
+        setCompletedOrders(prev => 
+          prev.filter(order => order.uniqueId !== uniqueCompletedOrder.uniqueId)
+        );
+      }, 30000);
+    }
   };
 
   return (

@@ -34,8 +34,9 @@ export default function OrderStatusBoard({ onOrderComplete }) {
   useEffect(() => {
     const processInterval = setInterval(() => {
       setCards(prevCards => {
+        // Get only orders that haven't been processed yet
         const processingOrders = prevCards
-          .filter(order => order.status === "On Process")
+          .filter(order => order.status === "On Process" && !movingCards.has(order.orderId))
           .slice(0, 3);
 
         if (processingOrders.length > 0) {
@@ -44,34 +45,41 @@ export default function OrderStatusBoard({ onOrderComplete }) {
 
           // Wait for animation before removing
           setTimeout(() => {
-            setCards(currentCards => 
-              currentCards
-                .filter(card => !processingOrders.find(po => po.orderId === card.orderId))
-                .map((card, index) => ({
-                  ...card,
-                  status: index < 3 ? "On Process" : "Pending"
-                }))
-            );
+            setCards(currentCards => {
+              // Remove processed orders and update next batch
+              const remainingCards = currentCards.filter(
+                card => !processingOrders.find(po => po.orderId === card.orderId)
+              );
+              
+              // Update status for next batch
+              return remainingCards.map((card, index) => ({
+                ...card,
+                status: index < 3 && card.status !== "Completed" ? "On Process" : "Pending"
+              }));
+            });
             
-            // Notify parent about completed orders
+            // Notify parent about completed orders only once
             processingOrders.forEach(order => {
-              onOrderComplete({
-                ...order,
-                status: "Completed",
-                completedAt: new Date()
-              });
+              if (!order.completed) {  // Add a check to prevent duplicate completion
+                onOrderComplete({
+                  ...order,
+                  status: "Completed",
+                  completedAt: new Date(),
+                  completed: true  // Mark as completed
+                });
+              }
             });
 
             // Clear moving cards
             setMovingCards(new Set());
-          }, 700); // Match animation duration
+          }, 700);
         }
         return prevCards;
       });
     }, 10000);
 
     return () => clearInterval(processInterval);
-  }, [onOrderComplete]);
+  }, [onOrderComplete, movingCards]);
 
   const processOrders = cards.filter(order => order.status === "On Process");
   const pendingOrders = cards.filter(order => order.status === "Pending");

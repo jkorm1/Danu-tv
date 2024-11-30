@@ -20,8 +20,8 @@ const OrderStatusCard = ({ order }) => {
       "w-full bg-white/90 transition-all duration-500",
       "hover:shadow-md",
       order.status === "On Process" && "animate-pulse-slow",
-      // Animation for cards moving out
-      "data-[moving=true]:animate-slide-out-fade",
+      // New animation for cards moving out
+      "data-[moving=true]:animate-slide-out-right",
       "data-[moving=true]:transform",
       "data-[moving=true]:transition-all",
       "data-[moving=true]:duration-700"
