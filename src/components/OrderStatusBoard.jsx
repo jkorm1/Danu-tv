@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import OrderStatusCard from './OrderStatusCard'
 import { cards as initialCards } from './cardsData'
 import { ClipboardList } from 'lucide-react'
+import axios from 'axios'
 
 // Add this CSS to your index.css or create a new animation class
 `
@@ -28,58 +29,33 @@ import { ClipboardList } from 'lucide-react'
 `
 
 export default function OrderStatusBoard({ onOrderComplete }) {
-  const [cards, setCards] = useState(initialCards);
+  const [cards, setCards] = useState([]);
   const [movingCards, setMovingCards] = useState(new Set());
 
   useEffect(() => {
-    const processInterval = setInterval(() => {
-      setCards(prevCards => {
-        // Get only orders that haven't been processed yet
-        const processingOrders = prevCards
-          .filter(order => order.status === "On Process" && !movingCards.has(order.orderId))
-          .slice(0, 3);
+    // Fetch orders when component mounts
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get('http://192.168.12.163:8002/screen_display/fetch_tv_status', {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+          }
+        });
+        
+        setCards(response.data);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    };
 
-        if (processingOrders.length > 0) {
-          // Mark cards as moving
-          setMovingCards(new Set(processingOrders.map(order => order.orderId)));
-
-          // Wait for animation before removing
-          setTimeout(() => {
-            setCards(currentCards => {
-              // Remove processed orders and update next batch
-              const remainingCards = currentCards.filter(
-                card => !processingOrders.find(po => po.orderId === card.orderId)
-              );
-              
-              // Update status for next batch
-              return remainingCards.map((card, index) => ({
-                ...card,
-                status: index < 3 && card.status !== "Completed" ? "On Process" : "Pending"
-              }));
-            });
-            
-            // Notify parent about completed orders only once
-            processingOrders.forEach(order => {
-              if (!order.completed) {  // Add a check to prevent duplicate completion
-                onOrderComplete({
-                  ...order,
-                  status: "Completed",
-                  completedAt: new Date(),
-                  completed: true  // Mark as completed
-                });
-              }
-            });
-
-            // Clear moving cards
-            setMovingCards(new Set());
-          }, 700);
-        }
-        return prevCards;
-      });
-    }, 10000);
-
-    return () => clearInterval(processInterval);
-  }, [onOrderComplete, movingCards]);
+    fetchOrders();
+    
+    // Set up polling interval
+    const interval = setInterval(fetchOrders, 10000);
+    return () => clearInterval(interval);
+  }, []);
 
   const processOrders = cards.filter(order => order.status === "On Process");
   const pendingOrders = cards.filter(order => order.status === "Pending");

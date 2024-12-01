@@ -18,7 +18,7 @@ export default function Header() {
         {/* Left section - Brand */}
         <div className="flex items-center gap-4">
           <ChefHat className="h-6 w-6 text-white" />
-          <h1 className="text-xl font-semibold tracking-wider px-1 text-white">Bell's Kitchen</h1>
+          <h1 className="text-xl font-semibold tracking-wider px-1 text-white">F & J</h1>
           <UtensilsCrossed className="h-6 w-6 text-white" />
         </div>
 
